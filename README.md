@@ -1,10 +1,9 @@
 # Proteções_anti-frida
 
 
-
 ## Proteção contra Hooking com frida
 
-#### **Explicando a comparação de seções de texto**
+### **Explicando a comparação de seções de texto**
 
 **O que é seções de texto**
 As seções de texto são áreas da memória que contêm o código executável do aplicativo, podendo ser armazenadas tanto na memória do processo quanto no disco, dependendo da fase de execução do aplicativo.
@@ -20,13 +19,14 @@ Para a biblioteca libc, podemos utilizar os seguintes passos:
 
 3. Mapear a seção de texto do arquivo da biblioteca na memória usando `mmap`, e obter o endereço da seção mapeada.
 
-4. 4.  Comparar a seção de texto na memória com a seção de texto no disco usando `memcmp`.
+4. Comparar a seção de texto na memória com a seção de texto no disco usando `memcmp`.
 
 Para bibliotecas nativas, os passos são semelhantes, exceto que é necessário conhecer o caminho do arquivo da biblioteca no disco. O `dlopen` pode ser usado para carregar a biblioteca na memória e obter o seu endereço base. Em seguida, basta seguir os mesmos passos da biblioteca libc para comparar a seção de texto na memória com a seção de texto no disco.
 
 ---
+---
 
-##### Explicando a detecção de pipes do Frida
+### Explicando a detecção de pipes do Frida
 
 O Frida utiliza pipes nomeados para permitir a comunicação entre o processo em execução e o código injetado.
 
@@ -47,8 +47,9 @@ A detecção de pipes nomeados monitora a existência e o uso de pipes nomeados 
 A proteção anti-Frida monitora as syscalls do processo alvo e procura por chamadas relacionadas a pipes nomeados com certos critérios, como determinado nome de pipe ou um determinado modo de abertura. Quando as chamadas são detectadas, a proteção identifica o Frida como criador do pipe nomeado e pode encerrar o processo ou bloquear a comunicação entre o Frida e o agente remoto.
 
 ---
+---
 
-#### Explicando a detecção através de threads nomeados
+### Explicando a detecção através de threads nomeados
 A detecção de threads nomeados é utilizada para detectar a presença do Frida em um processo alvo. O Frida utiliza um thread específico nomeado `frida-helper-XXXX` para realizar algumas operações em um processo alvo.
 
 **O que é um thread?**
@@ -62,10 +63,12 @@ A detecção monitora os threads em execução no processo alvo e procura por th
 A proteção anti-Frida faz o monitoramento dos threads do processo alvo e quando detecta a presença de um thread nomeado com `frida-helper-XXXX`, pode tomar medidas para impedir que o Frida injete códigos ou realize outras operações. Uma das medidas tomadas pelo anti-Frida é interromper a execução do processo, bloquear a comunicação com o agente remoto do Frida ou tomar outras ações que impeçam a ação do Frida no processo alvo.
 
 ---
+---
 
 ## Proteção de código nativo
 
-##### Explicando a substituição de chamadas libc por syscalls 
+
+### Explicando a substituição de chamadas libc por syscalls 
 A proteção de substituição de chamadas libc por syscalls é usada para evitar a substituição de funções da biblioteca padrão do C (libc) pelo Frida. O Frida substitui essas funções para interceptar as syscalls e injetar seu próprio código em um aplicativo em execução.
 
 **Proteção anti-Frida**
@@ -77,8 +80,9 @@ Outra abordagem é monitorar todas as syscalls do programa, o que pode ser inefi
 A proteção é implementada por meio de um código de inserção que substitui as chamadas da libc por syscalls em tempo de execução. O anti-Frida procura esse código de inserção e o remove do programa em execução para evitar que o Frida use para substituir as chamadas da libc.
 
 ---
+---
 
-##### Explicando a substituição de string
+### Explicando a substituição de string
 
 A substituição de string é uma técnica anti-frida que envolve a substituição de strings sensíveis no código do aplicativo por strings personalizadas em tempo de execução.
 
@@ -91,11 +95,13 @@ Para a implementação dessa proteção, é necessário identificar as strings s
 O anti-frida monitora as chamadas de funções relacionadas à memória para detectar quando as strings personalizadas estão sendo acessadas. Se o frida tentar acessar uma string sensível que foi substituída, ele receberá uma string personalizada em vez da original, o que tornará mais difícil a identificação de informações do código.
 
 ---
+---
 
-##### Explicando a aplicação de ofuscação nativa O-LLVM
+### Explicando a aplicação de ofuscação nativa O-LLVM
 
 O O-LLVM transforma o código LLVM em código ofuscado adicionando aleatoriamente instruções redundantes ou enganosas no código original, altera a ordem das instruções e renomeia as variáveis. O código do aplicativo é protegido de uma forma que dificulta o Frida a explorar o código do aplicativo.
 
 A ofuscação nativa O-LLVM pode ser usada como uma medida de proteção anti-Frida porque torna mais difícil para o Frida analisar e modificar o código do aplicativo. Isso dificulta a engenharia reversa e a injeção de código malicioso, ajudando a manter a segurança do aplicativo.
 
+---
 ---
