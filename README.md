@@ -6,9 +6,11 @@
 ### **Explicando a comparação de seções de texto**
 
 **O que é seções de texto**
+
 As seções de texto são áreas da memória que contêm o código executável do aplicativo, podendo ser armazenadas tanto na memória do processo quanto no disco, dependendo da fase de execução do aplicativo.
  
 **Comparação**
+
 Para comparar a seção de texto na memória com a seção de texto no disco, é necessário obter o endereço de memória da biblioteca carregada e o caminho do arquivo da biblioteca no disco.
 
 Para a biblioteca libc, podemos utilizar os seguintes passos:
@@ -50,16 +52,20 @@ A proteção anti-Frida monitora as syscalls do processo alvo e procura por cham
 ---
 
 ### Explicando a detecção através de threads nomeados
+
 A detecção de threads nomeados é utilizada para detectar a presença do Frida em um processo alvo. O Frida utiliza um thread específico nomeado `frida-helper-XXXX` para realizar algumas operações em um processo alvo.
 
 **O que é um thread?**
+
  Um thread é uma unidade básica de um processo que é executado
  em paralelo com outros threads do mesmo processo. Cada thread tem seu próprio conjunto de registradores, pilhas e contexto de execução.
 
 **Detecção de threads nomeados**
+
 A detecção monitora os threads em execução no processo alvo e procura por threads com o nome `frida-helper-XXXX`. Caso um processo seja injetado com o Frida, o próprio Frida cria um thread nomeado com esse nome para realizar algumas operações.
 
 **Proteção anti-Frida**
+
 A proteção anti-Frida faz o monitoramento dos threads do processo alvo e quando detecta a presença de um thread nomeado com `frida-helper-XXXX`, pode tomar medidas para impedir que o Frida injete códigos ou realize outras operações. Uma das medidas tomadas pelo anti-Frida é interromper a execução do processo, bloquear a comunicação com o agente remoto do Frida ou tomar outras ações que impeçam a ação do Frida no processo alvo.
 
 ---
@@ -69,6 +75,7 @@ A proteção anti-Frida faz o monitoramento dos threads do processo alvo e quand
 
 
 ### Explicando a substituição de chamadas libc por syscalls 
+
 A proteção de substituição de chamadas libc por syscalls é usada para evitar a substituição de funções da biblioteca padrão do C (libc) pelo Frida. O Frida substitui essas funções para interceptar as syscalls e injetar seu próprio código em um aplicativo em execução.
 
 **Proteção anti-Frida**
