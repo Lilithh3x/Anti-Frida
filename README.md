@@ -3,6 +3,7 @@
 
 ## Proteção contra Hooking com frida
 
+
 ### **Explicando a comparação de seções de texto**
 
 **O que é seções de texto**
@@ -70,6 +71,7 @@ A proteção anti-Frida faz o monitoramento dos threads do processo alvo e quand
 
 ---
 ---
+
 
 ## Proteção de código nativo
 
