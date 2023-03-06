@@ -29,29 +29,6 @@ Para bibliotecas nativas, os passos são semelhantes, exceto que é necessário 
 ---
 ---
 
-### Explicando a detecção de pipes do Frida
-
-O Frida utiliza pipes nomeados para permitir a comunicação entre o processo em execução e o código injetado.
-
-Um pipe é criado como um arquivo no sistema de arquivos e fica acessível por vários processos que compartilham o mesmo caminho de arquivo.
-
-No Frida, o processo em execução e o código injetado se comunicam através de um ou mais pipes nomeados, que são criados pelo próprio Frida. O código injetado pode escrever dados em um pipe nomeado que são lidos pelo processo em execução e vice-versa.
-
-**O que é um pipe?**
-
- Um pipe é um mecanismo de comunicação interprocesso (IPC) em sistemas operacionais. É um canal de comunicação que permite que processos se comuniquem por meio de um fluxo de dados unidirecional.
-
-**Detecção através de pipes**
-
-A detecção de pipes nomeados monitora a existência e o uso de pipes nomeados por processos em execução. Quando o Frida injeta código em um processo, ele cria pipes nomeados exclusivos para esse processo e, se o aplicativo em execução tentar criar um pipe nomeado com o mesmo caminho de arquivo, pode ser um sinal de que o aplicativo está tentando se comunicar com o código injetado pelo Frida.
-
-**proteção anti-Frida detectando pipe nomeado**
-
-A proteção anti-Frida monitora as syscalls do processo alvo e procura por chamadas relacionadas a pipes nomeados com certos critérios, como determinado nome de pipe ou um determinado modo de abertura. Quando as chamadas são detectadas, a proteção identifica o Frida como criador do pipe nomeado e pode encerrar o processo ou bloquear a comunicação entre o Frida e o agente remoto.
-
----
----
-
 ### Explicando a detecção através de threads nomeados
 
 A detecção de threads nomeados é utilizada para detectar a presença do Frida em um processo alvo. O Frida utiliza um thread específico nomeado `frida-helper-XXXX` para realizar algumas operações em um processo alvo.
